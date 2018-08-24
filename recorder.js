@@ -13,7 +13,7 @@ client.on('connect', function () {
     client.subscribe('devices/#', function (err) {
       if (err) {
         console.log(err)
-        exit(1)
+        process.exit(1)
       }
     })
   })
