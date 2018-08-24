@@ -10,7 +10,7 @@ const dbName = 'iot-poc';
 const conn = MongoClient.connect(url)
 
 client.on('connect', function () {
-    client.subscribe('devices/#', function (err) {
+    client.subscribe('#', function (err) {
       if (err) {
         console.log(err)
         process.exit(1)
