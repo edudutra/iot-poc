@@ -3,7 +3,7 @@ var client  = mqtt.connect('mqtt://54.233.228.117', {port:1883, username:'inhaus
 
 const MongoClient = require('mongodb').MongoClient;
 // Connection URL
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://inhaus:inhaus@54.233.228.117:27017/admin';
 // Database Name
 const dbName = 'iot-poc';
 
