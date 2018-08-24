@@ -1,5 +1,5 @@
 var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://10.0.110.53', {port:1883})
+var client  = mqtt.connect('mqtt://54.233.228.117', {port:1883, username:'inhaus', password:'inhaus'})
 
 const MongoClient = require('mongodb').MongoClient;
 // Connection URL
