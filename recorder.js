@@ -9,27 +9,101 @@ const dbName = 'iot-poc';
 
 const conn = MongoClient.connect(url)
 
+const subscriptions = ['Advantech/00D0C9FD579C/+']
+
 client.on('connect', function () {
-    client.subscribe('#', function (err) {
-      if (err) {
-        console.log(err)
-        proccess.exit(1)
-      }
-    })
+    subscriptions.forEach(subscription => {
+        client.subscribe(subscription, function (err) {
+            if (err) {
+                console.log(`Erro ao subscrever ${subscription}: ${err}`)
+            }
+        })       
+    });
   })
   
 client.on('message', function (topic, message) {
     // Insert a single document
+    console.log(`${topic}\t${message}`)
     conn.then(function(db) {
-        db.db(dbName).collection('messages').insertOne(
-            {
-                topic:topic,
-                message:message.toString()
-            }, function(err, r) {
-            //console.log(message.toString())
-        });
+        item = parseMessage(topic, message)
+
+        if (item[0] === 'data') {
+            db.db(dbName)
+                .collection('data')
+                .insertOne(item[1], function(err, r) {
+                    if (err) {
+                        console.log(`Erro ao salvar: ${item}\t${err}`)
+                    }
+            })
+
+            db.db(dbName)
+            .collection('Device_Status')
+            .findOne(
+                { objectId: item[1].objectId},
+                function(err, doc) {
+                if (err) {
+                    console.log(`Erro ao salvar: ${item}\t${err}`)
+                }
+                
+                if (item[1].data && 'do1' in item[1].data) {
+                    doc.last_do = item[1].data
+                }
+                else if (item[1].data && 'di1' in item[1].data) {
+                    doc.last_di = item[1].data
+                }
+
+                db.db(dbName)
+                .collection('Device_Status')
+                .updateOne(
+                    { objectId: item[1].objectId},
+                    { $set: doc },
+                    { upsert: true},
+                    function(err, r) {
+                    if (err) {
+                        console.log(`Erro ao salvar: ${item}\t${err}`)
+                    }
+                })
+
+            })
+
+        }
+        else if (item[0] === 'Device_Status') {
+            db.db(dbName)
+                .collection('Device_Status')
+                .updateOne(
+                    { objectId: item[1].objectId},
+                    { $set: item[1]},
+                    { upsert: true},
+                    function(err, r) {
+                    if (err) {
+                        console.log(`Erro ao salvar: ${item}\t${err}`)
+                    }
+            })
+        }
+
     })
     .catch(function(e) {
         console.log(e);
       });
 })
+
+function parseMessage(topic, message) {
+    topic_path = topic.split('/')
+    if (topic_path.length != 3) {
+        return null
+    }
+    item = {
+        objectId : topic_path[1], 
+        objectBrand : topic_path[0]
+    }
+    switch (topic_path[2]) {
+        case 'data':
+            item.data = JSON.parse(message)
+            break;
+        case 'Device_Status':
+            item.status = JSON.parse(message)
+        default:
+            break;
+    }
+    return [topic_path[2], item]
+}
