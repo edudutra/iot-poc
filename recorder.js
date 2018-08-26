@@ -107,3 +107,5 @@ function parseMessage(topic, message) {
     }
     return [topic_path[2], item]
 }
+
+module.exports = parseMessage
