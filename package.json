@@ -2,16 +2,23 @@
   "name": "iot-poc",
   "version": "0.0.1",
   "description": "",
-  "main": "recorder.js",
+  "main": "server.js",
   "scripts": {
     "test": "mocha --exit"
   },
   "author": "Eduardo Dutra (emdutra@gmail.com)",
   "license": "ISC",
   "dependencies": {
+    "boom": "^7.2.0",
+    "dotenv": "^6.0.0",
+    "hapi": "^17.5.3",
+    "hapi-mongodb": "^7.1.0",
+    "hoek": "^5.0.4",
     "moment": "^2.22.2",
     "mongodb": "^3.1.3",
-    "mqtt": "^2.18.5"
+    "mqtt": "^2.18.5",
+    "pug": "^2.0.3",
+    "vision": "^5.4.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
