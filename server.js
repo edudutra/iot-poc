@@ -29,13 +29,15 @@ const init = async () => {
         
     server.views({
         engines: { pug: require('pug') },
-        path: Path.join(__dirname, 'lib/views'),
+        //path: Path.join(__dirname, 'lib/views'),
         compileOptions: {
-          pretty: ! Settings.env === 'production'
+          pretty: true
         },
         isCached: Settings.env === 'production',
-        layout: true,
-        layoutPath: Path.join(__dirname, 'lib/views')
+        //layout: true,
+        //layoutPath: Path.join(__dirname, 'lib/views')
+        relativeTo: __dirname,
+        path: `lib/views/.`
       });
 
     await server.start()

@@ -9,6 +9,15 @@ const dbName = 'iot-poc';
 
 const conn = MongoClient.connect(url)
 
+
+const request = require('request');
+
+request('http://localhost:3000/api/instance/5b846b43ca324e22801aca2b', { json: true }, (err, res, body) => {
+  if (err) { return console.log(err); }
+  console.log(body.url);
+  console.log(body.explanation);
+});
+
 const subscriptions = ['Advantech/00D0C9FD579C/+']
 
 client.on('connect', function () {

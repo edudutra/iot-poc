@@ -1,4 +1,10 @@
-extends layout
+extends layouts/layout
 
 block content
-    p Teste
+    header(content)
+        h1 Devices
+    
+    main(container).devices-list
+        each device in data.devices
+            //p= device.objectId
+            include components/device
