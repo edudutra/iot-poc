@@ -5,7 +5,7 @@ const rules = require('./rules/parser')
 
 const MongoClient = require('mongodb').MongoClient;
 // Connection URL
-const url = 'mongodb://inhaus:inhaus@54.233.228.117:27017/admin';
+const url = 'mongodb://inhaus:inhaus@54.233.228.117:27017/iot-poc?authSource=admin';
 // Database Name
 const dbName = 'iot-poc';
 
@@ -113,5 +113,3 @@ init()
 .catch(function(err) {
     console.log(err)
 })
-
-module.exports = parseMessage
