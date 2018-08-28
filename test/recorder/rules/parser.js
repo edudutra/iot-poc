@@ -1,5 +1,5 @@
 var expect = require('chai').expect
-var parseMessage = require('../recorder')
+var parseMessage = require('../../../listener/rules/parser').parseMessage
 
 describe('parseMessage()', function() {
     describe('Advantech module', function() {
@@ -55,7 +55,7 @@ describe('parseMessage()', function() {
             expect(parsed[1].objectId).to.be.equal('1234567890')
         })
 
-        it('shoud load message as object in data when topic ends in data', function() {
+        it('should load message as object in data when topic ends in data', function() {
             //Arrange
             var topic = 'Advantech/1234567890/data'
             var data = {a : 1 , b : "123", c: false, d: Date.now()}
@@ -66,7 +66,7 @@ describe('parseMessage()', function() {
             expect(parsed[1].data).to.be.deep.equal(data)
         })
 
-        it('shoud load message as object in status when topic ends in Device_Status', function() {
+        it('should load message as object in status when topic ends in Device_Status', function() {
             //Arrange
             var topic = 'Advantech/1234567890/Device_Status'
             var data = {a : 1 , b : "123", c: false, d: Date.now()}
